@@ -1,0 +1,4 @@
+# bloom.py itself has zero dependencies (stdlib only).
+# These are only for the dataset loader (dedup.py) and the plot (tradeoff.py).
+scikit-learn==1.6.1
+matplotlib==3.9.4
