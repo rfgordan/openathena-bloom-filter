@@ -1,14 +1,3 @@
-"""Explore the Bloom filter space vs. false-positive-rate trade-off.
-
-We hold the dataset fixed and sweep the only real dial: bits per element (m/n).
-For each setting we (a) compute the theoretical FP rate and (b) measure the
-empirical FP rate by actually deduplicating the stream. The two should track
-closely, which validates that the double-hashing scheme behaves like ideal
-independent hashes.
-
-Output: a printed table plus tradeoff.png.
-"""
-
 import math
 
 import matplotlib

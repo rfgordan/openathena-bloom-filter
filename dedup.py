@@ -1,17 +1,3 @@
-"""Deduplicate a text dataset with a Bloom filter, and measure the cost.
-
-Dataset: the 20 Newsgroups corpus (a classic ML text dataset that ships with
-scikit-learn). It's a stand-in for a real motivating use case: removing
-duplicate documents from a corpus before training, where the corpus is far too
-large to hold an exact set of every document seen.
-
-Real-world duplicate rates vary, so to get a *known* ground truth we resample
-the documents with replacement at a controlled duplicate fraction. That lets us
-report not just "how many dupes were removed" but the thing a Bloom filter
-forces you to reason about: how many genuinely-unique documents it wrongly threw
-away (false positives).
-"""
-
 import argparse
 import random
 
@@ -21,11 +7,6 @@ from bloom import BloomFilter
 
 
 def load_stream(num_unique, dup_fraction, seed=0):
-    """Return a shuffled stream of documents with a known duplicate fraction.
-
-    We take `num_unique` distinct docs, then pad the stream with copies of
-    randomly chosen docs until `dup_fraction` of the stream is duplicates.
-    """
     docs = fetch_20newsgroups(subset="train", remove=("headers", "footers", "quotes")).data
     rng = random.Random(seed)
 
@@ -37,11 +18,6 @@ def load_stream(num_unique, dup_fraction, seed=0):
 
 
 def dedup(stream, num_bits, num_hashes):
-    """Stream items through a Bloom filter, keeping only first-seen ones.
-
-    Returns the kept items plus stats measured against an exact set (the exact
-    set is only here to grade the Bloom filter — in production its whole purpose
-    is to avoid needing one)."""
     bloom = BloomFilter(num_bits, num_hashes)
     seen_exact = set()
 
