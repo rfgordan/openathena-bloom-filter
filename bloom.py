@@ -3,6 +3,7 @@ from hashlib import blake2b
 
 
 class BloomFilter:
+    # TODO: could calculate optimal hashes directly from num bits and num elements
     def __init__(self, num_bits, num_hashes=7):
         self.num_bits = max(1, int(num_bits))
         self.num_hashes = max(1, int(num_hashes))
@@ -27,8 +28,6 @@ class BloomFilter:
         self.count += 1
 
     def __contains__(self, item):
-        # Positive only if *every* one of the k bits is set. A single unset bit
-        # proves the item was never added -> no false negatives, ever.
         return all(self.bits[idx >> 3] & (1 << (idx & 7)) for idx in self._indices(item))
 
     @property
